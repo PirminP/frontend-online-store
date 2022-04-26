@@ -18,11 +18,12 @@ function App() {
           //     { ...props }
           //   />
           // ) }
+          // test
         />
         <Route
           exact
           path="/carrinho"
-          component={Carrinho}
+          component={ Carrinho }
         />
       </Switch>
     </BrowserRouter>
