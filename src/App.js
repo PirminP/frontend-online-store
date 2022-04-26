@@ -2,6 +2,7 @@ import React from 'react';
 import './App.css';
 import { Route, Switch, BrowserRouter } from 'react-router-dom';
 import Search from './pages/Search';
+import Carrinho from './pages/Carrinho';
 
 function App() {
   return (
@@ -17,8 +18,13 @@ function App() {
           //     { ...props }
           //   />
           // ) }
+          // test
         />
-
+        <Route
+          exact
+          path="/carrinho"
+          component={ Carrinho }
+        />
       </Switch>
     </BrowserRouter>
   );
