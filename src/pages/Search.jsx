@@ -115,12 +115,17 @@ export default class Search extends Component {
             {
               fetchProducts
             && fetchProducts.map(({ title, price, thumbnail, id }) => (
-              <ProductCard
+              <Link
+                data-testid="product-detail-link"
                 key={ id }
-                productName={ title }
-                productImage={ thumbnail }
-                productPrice={ price }
-              />
+                to={ `/product-details/${id}` }
+              >
+                <ProductCard
+                  productName={ title }
+                  productImage={ thumbnail }
+                  productPrice={ price }
+                />
+              </Link>
             ))
               // fetchProducts
               // && fetchProducts.map((product) => (
