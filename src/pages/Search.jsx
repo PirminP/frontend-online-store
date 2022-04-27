@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ProductCard from '../components/ProductCard';
-import { getCategories, getProductsFromQuery } from '../services/api';
+import '../App.css';
+import {
+  getCategories,
+  getProductsFromCategory,
+  getProductsFromQuery } from '../services/api';
 
 export default class Search extends Component {
   constructor() {
@@ -18,6 +22,11 @@ export default class Search extends Component {
     this.setState({
       categoriesState: categories,
     });
+    this.handleCategoryClick({ target: { id: categories[0].id } });
+    // const auxVar = await getProductsFromCategory(categories[0].id);
+    /* this.setState({
+      fetchProducts: auxVar,
+    }); */
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -28,6 +37,11 @@ export default class Search extends Component {
   handleSearchProducts = async () => {
     const { inputValue } = this.state;
     const { results } = await getProductsFromQuery(inputValue);
+    this.setState({ fetchProducts: results });
+  }
+
+  handleCategoryClick = async ({ target: { id } }) => {
+    const { results } = await getProductsFromCategory(id);
     this.setState({ fetchProducts: results });
   }
 
@@ -71,9 +85,35 @@ export default class Search extends Component {
           </Link>
         </main>
 
-        <section>
-          {
-            fetchProducts
+        <div className="card_conteiner">
+
+          <aside>
+            <section>
+              <h3>
+                Categorias:
+              </h3>
+              {
+                categoriesState.map((category) => (
+                  <ul
+                    key={ category.id }
+                    data-testid="category"
+                  >
+                    <button
+                      type="button"
+                      id={ category.id }
+                      onClick={ this.handleCategoryClick }
+                    >
+                      { category.name }
+                    </button>
+                  </ul>
+                ))
+              }
+            </section>
+          </aside>
+
+          <section>
+            {
+              fetchProducts
             && fetchProducts.map(({ title, price, thumbnail, id }) => (
               <ProductCard
                 key={ id }
@@ -82,8 +122,8 @@ export default class Search extends Component {
                 productPrice={ price }
               />
             ))
-            // fetchProducts
-            // && fetchProducts.map((product) => (
+              // fetchProducts
+              // && fetchProducts.map((product) => (
             //   <ProductCard
             //     key={ product.id }
             //     productName={ product.title }
@@ -91,30 +131,10 @@ export default class Search extends Component {
             //     productPrice={ product.price }
             //   />
             // ))
-          }
-        </section>
-
-        <aside>
-          <section>
-            <h3>
-              Categorias:
-            </h3>
-            {
-              categoriesState.map((category) => (
-                <ul
-                  key={ category.id }
-                  data-testid="category"
-                >
-                  <button
-                    type="button"
-                  >
-                    { category.name }
-                  </button>
-                </ul>
-              ))
             }
           </section>
-        </aside>
+
+        </div>
       </>
     );
   }
