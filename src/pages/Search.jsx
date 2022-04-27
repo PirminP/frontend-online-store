@@ -1,12 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { getCategories } from '../services/api';
+import ProductCard from '../components/ProductCard';
+import { getCategories, getProductsFromQuery } from '../services/api';
 
 export default class Search extends Component {
   constructor() {
     super();
     this.state = {
       categoriesState: [],
+      inputValue: '',
+      fetchProducts: [],
     };
   }
 
@@ -17,25 +20,79 @@ export default class Search extends Component {
     });
   }
 
+  handleChange = ({ target: { name, value } }) => {
+    // const { name, value } = target;
+    this.setState(({ [name]: value }));
+  }
+
+  handleSearchProducts = async () => {
+    const { inputValue } = this.state;
+    const { results } = await getProductsFromQuery(inputValue);
+    this.setState({ fetchProducts: results });
+  }
+
   render() {
     const {
       categoriesState,
+      inputValue,
+      fetchProducts,
     } = this.state;
     return (
       <>
         <main data-testid="home-initial-message">
-          <input
-            type="text"
-            name="search"
-          />
+          <label htmlFor="query-input">
+            <input
+              type="text"
+              value={ inputValue }
+              name="inputValue"
+              data-testid="query-input"
+              onChange={ this.handleChange }
+            />
+
+            <button
+              type="button"
+              data-testid="query-button"
+              onClick={ this.handleSearchProducts }
+            >
+              Pesquisar
+            </button>
+
+          </label>
 
           <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
           <Link
             to="/carrinho"
           >
-            <input type="button" data-testid="shopping-cart-button" />
+            <input
+              value="Carrinho"
+              type="button"
+              data-testid="shopping-cart-button"
+            />
           </Link>
         </main>
+
+        <section>
+          {
+            fetchProducts
+            && fetchProducts.map(({ title, price, thumbnail, id }) => (
+              <ProductCard
+                key={ id }
+                productName={ title }
+                productImage={ thumbnail }
+                productPrice={ price }
+              />
+            ))
+            // fetchProducts
+            // && fetchProducts.map((product) => (
+            //   <ProductCard
+            //     key={ product.id }
+            //     productName={ product.title }
+            //     productImage={ product.thumbnail }
+            //     productPrice={ product.price }
+            //   />
+            // ))
+          }
+        </section>
 
         <aside>
           <section>
