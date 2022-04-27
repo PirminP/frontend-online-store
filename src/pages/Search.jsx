@@ -27,6 +27,7 @@ export default class Search extends Component {
           <input
             type="text"
             name="search"
+            data-testid="query-input"
           />
 
           <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
