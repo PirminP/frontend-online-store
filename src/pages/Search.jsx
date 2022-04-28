@@ -76,12 +76,14 @@ export default class Search extends Component {
           <p>Digite algum termo de pesquisa ou escolha uma categoria.</p>
           <Link
             to="/carrinho"
+            data-testid="shopping-cart-button"
           >
-            <input
+            Carrinho
+            {/* <input
               value="Carrinho"
               type="button"
               data-testid="shopping-cart-button"
-            />
+            /> */}
           </Link>
         </main>
 

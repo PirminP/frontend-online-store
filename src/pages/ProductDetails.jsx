@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { getProductsFromProductId } from '../services/api';
 
 export default class ProductDetails extends Component {
@@ -34,6 +35,12 @@ export default class ProductDetails extends Component {
         <p>{productName}</p>
         <img src={ productImage } alt={ productName } />
         <p>{productPrice }</p>
+        <Link
+          to="/carrinho"
+          data-testid="shopping-cart-button"
+        >
+          Carrinho
+        </Link>
       </div>
     );
   }
