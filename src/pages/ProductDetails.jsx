@@ -31,15 +31,24 @@ export default class ProductDetails extends Component {
       <div
         data-testid="product-detail-name"
       >
+        <Link
+          to="/"
+        >
+          Início
+        </Link>
+
         ProductDetails
         <p>{productName}</p>
+
         <img src={ productImage } alt={ productName } />
+
         <p>{productPrice }</p>
+
         <Link
           to="/carrinho"
           data-testid="shopping-cart-button"
         >
-          Carrinho
+          Ir para Carrinho!
         </Link>
       </div>
     );

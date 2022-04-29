@@ -16,13 +16,16 @@ class ProductCard extends Component {
         <h2>
           { productName }
         </h2>
+
         <img
           src={ productImage }
           alt={ productName }
         />
+
         <p>
           { productPrice }
         </p>
+
       </div>
     );
   }

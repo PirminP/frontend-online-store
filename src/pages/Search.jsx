@@ -5,6 +5,7 @@ import '../App.css';
 import {
   getCategories,
   getProductsFromCategory,
+  getProductsFromProductId,
   getProductsFromQuery } from '../services/api';
 
 export default class Search extends Component {
@@ -14,6 +15,7 @@ export default class Search extends Component {
       categoriesState: [],
       inputValue: '',
       fetchProducts: [],
+      cartStorage: [],
     };
   }
 
@@ -43,6 +45,22 @@ export default class Search extends Component {
   handleCategoryClick = async ({ target: { id } }) => {
     const { results } = await getProductsFromCategory(id);
     this.setState({ fetchProducts: results });
+  }
+
+  addToCart = async ({ target: { id } }) => {
+    await this.setState((prev) => ({
+      cartStorage: [...prev.cartStorage, id],
+    }));
+
+    const { cartStorage } = this.state;
+    const cartArray = [];
+    const testing = cartStorage.forEach(async (currId) => {
+      const productData = await getProductsFromProductId(currId);
+      cartArray.push(productData);
+    });
+    console.log(cartArray);
+    // Promise.all(testing).then(console.log(testing, "aaa"));
+    localStorage.setItem('cart', JSON.stringify(testing));
   }
 
   render() {
@@ -78,7 +96,7 @@ export default class Search extends Component {
             to="/carrinho"
             data-testid="shopping-cart-button"
           >
-            Carrinho
+            Ir para Carrinho!
             {/* <input
               value="Carrinho"
               type="button"
@@ -117,17 +135,30 @@ export default class Search extends Component {
             {
               fetchProducts
             && fetchProducts.map(({ title, price, thumbnail, id }) => (
-              <Link
-                data-testid="product-detail-link"
-                key={ id }
-                to={ `/product-details/${id}` }
-              >
-                <ProductCard
-                  productName={ title }
-                  productImage={ thumbnail }
-                  productPrice={ price }
-                />
-              </Link>
+              <div key={ id }>
+
+                <Link
+                  data-testid="product-detail-link"
+                  key={ id }
+                  to={ `/product-details/${id}` }
+                >
+                  <ProductCard
+                    productName={ title }
+                    productImage={ thumbnail }
+                    productPrice={ price }
+                  />
+                </Link>
+
+                <button
+                  type="button"
+                  id={ id }
+                  onClick={ this.addToCart }
+                  data-testid="product-add-to-cart"
+                >
+                  +Adicionar ao Carrinho+
+                </button>
+
+              </div>
             ))
               // fetchProducts
               // && fetchProducts.map((product) => (
