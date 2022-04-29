@@ -28,21 +28,23 @@ export default class ProductDetails extends Component {
   render() {
     const { productImage, productName, productPrice } = this.state;
     return (
-      <div
-        data-testid="product-detail-name"
-      >
+      <div>
+        <p
+          data-testid="product-detail-name"
+        >
+          {productName}
+
+        </p>
+
+        <img src={ productImage } alt={ productName } />
+
+        <p>{productPrice }</p>
+
         <Link
           to="/"
         >
           Início
         </Link>
-
-        ProductDetails
-        <p>{productName}</p>
-
-        <img src={ productImage } alt={ productName } />
-
-        <p>{productPrice }</p>
 
         <Link
           to="/carrinho"
