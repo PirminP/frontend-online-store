@@ -13,18 +13,16 @@ function App() {
         <Route
           exact
           path="/"
-          component={ Search }
-          // render={ (props) => (
-          //   <Search
-          //     { ...props }
-          //   />
-          // ) }
-          // test
+          render={ (props) => (
+            <Search
+              { ...props }
+            />
+          ) }
         />
         <Route
           exact
           path="/carrinho"
-          component={ Carrinho }
+          render={ (props) => <Carrinho { ...props } /> }
         />
         <Route
           exact
