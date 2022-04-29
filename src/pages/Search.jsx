@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import propTypes from 'prop-types';
 import ProductCard from '../components/ProductCard';
 import '../App.css';
 import {
   getCategories,
   getProductsFromCategory,
-  getProductsFromProductId,
+  /* getProductsFromProductId, */
   getProductsFromQuery } from '../services/api';
 
 export default class Search extends Component {
@@ -29,6 +30,13 @@ export default class Search extends Component {
     /* this.setState({
       fetchProducts: auxVar,
     }); */
+    /* const fetchLocalStorage = localStorage.getItem('cart');
+    const cartList = JSON.parse(fetchLocalStorage);
+    if (cartList) {
+      this.setState({
+        cartStorage: id,
+      });
+    } */
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -47,20 +55,18 @@ export default class Search extends Component {
     this.setState({ fetchProducts: results });
   }
 
-  addToCart = async ({ target: { id } }) => {
-    await this.setState((prev) => ({
-      cartStorage: [...prev.cartStorage, id],
+  addToCart = /* async */ ({ target: { data } }) => {
+    /* await */this.setState((prev) => ({
+      cartStorage: [...prev.cartStorage, data],
     }));
-
-    const { cartStorage } = this.state;
-    const cartArray = [];
-    const testing = cartStorage.forEach(async (currId) => {
-      const productData = await getProductsFromProductId(currId);
-      cartArray.push(productData);
+    /* const { cartStorage } = this.state;
+     const cartArray = cartStorage.map(async (currId) => {
+      const arrayItens = await getProductsFromProductId(currId);
+      return arrayItens;
     });
-    console.log(cartArray);
-    // Promise.all(testing).then(console.log(testing, "aaa"));
-    localStorage.setItem('cart', JSON.stringify(testing));
+    Promise.all(cartArray).then((values) => {
+      localStorage.setItem('cart', JSON.stringify(values));
+    }); */
   }
 
   render() {
@@ -69,6 +75,7 @@ export default class Search extends Component {
       inputValue,
       fetchProducts,
     } = this.state;
+    const { data } = this.props;
     return (
       <>
         <main data-testid="home-initial-message">
@@ -134,26 +141,32 @@ export default class Search extends Component {
           <section>
             {
               fetchProducts
-            && fetchProducts.map(({ title, price, thumbnail, id }) => (
-              <div key={ id }>
+            && fetchProducts.map((product) => (
+              <div key={ product.id }>
 
                 <Link
                   data-testid="product-detail-link"
-                  key={ id }
-                  to={ `/product-details/${id}` }
+                  key={ product.id }
+                  to={ `/product-details/${product.id}` }
                 >
                   <ProductCard
-                    productName={ title }
-                    productImage={ thumbnail }
-                    productPrice={ price }
+                    productName={ product.title }
+                    productImage={ product.thumbnail }
+                    productPrice={ product.price }
                   />
                 </Link>
 
                 <button
                   type="button"
-                  id={ id }
                   onClick={ this.addToCart }
                   data-testid="product-add-to-cart"
+                  data={ [
+                    product.title,
+                    product.price,
+                    product.thumbnail,
+                    product.id,
+                    product.available_quantity,
+                  ] }
                 >
                   +Adicionar ao Carrinho+
                 </button>
@@ -177,3 +190,7 @@ export default class Search extends Component {
     );
   }
 }
+
+Search.propTypes = {
+  data: propTypes.arrayOf(propTypes.string),
+}.isRequired;

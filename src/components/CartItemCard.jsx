@@ -11,21 +11,21 @@ class CartItem extends Component {
     } = this.props;
 
     return (
-      <div
-        data-testid="shopping-cart-product-name"
-      >
-        <p>
-          { cartItemName }
+      <div>
+        <p
+          data-testid="shopping-cart-product-name"
+        >
+          {`Produto: ${cartItemName}`}
         </p>
 
         <p
           data-testid="shopping-cart-product-quantity"
         >
-          { cartItemQuantity }
+          {`Quantidade: ${cartItemQuantity}`}
         </p>
 
         <p>
-          { cartItemPrice }
+          {`Preço: ${cartItemPrice}`}
         </p>
 
         <img
