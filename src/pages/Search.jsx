@@ -5,7 +5,6 @@ import '../App.css';
 import {
   getCategories,
   getProductsFromCategory,
-  getProductsFromProductId,
   getProductsFromQuery } from '../services/api';
 
 export default class Search extends Component {
@@ -36,16 +35,12 @@ export default class Search extends Component {
         cartStorage: id,
       });
     } */
-    const fetchLocalStorage = localStorage.getItem('cart');
-    const cartList = JSON.parse(fetchLocalStorage);
-    console.log(cartList);
-    let CartLocalStorage = [];
-    if (cartList !== null) {
-      CartLocalStorage = cartList.map((item) => item.id);
-    }
-    await this.setState(() => ({
-      cartStorage: [...CartLocalStorage],
-    }));
+    // localStorage.setItem('cart', []);
+    const getCartList = localStorage.getItem('cart');
+    const cartList = getCartList ? JSON.parse(getCartList) : [];
+    this.setState({
+      cartStorage: cartList,
+    });
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -64,18 +59,14 @@ export default class Search extends Component {
     this.setState({ fetchProducts: results });
   }
 
-  addToCart = async ({ target: { id } }) => {
-    await this.setState((prev) => ({
-      cartStorage: [...prev.cartStorage, id],
+  addToCart = ({ target: { id } }) => {
+    const { fetchProducts, cartStorage } = this.state;
+    const getProduct = fetchProducts.find((product) => product.id === id);
+    const newCartStorage = cartStorage.concat(getProduct);
+    this.setState(() => ({
+      cartStorage: newCartStorage,
     }));
-    const { cartStorage } = this.state;
-    const cartArray = cartStorage.map(async (currId) => {
-      const arrayItens = await getProductsFromProductId(currId);
-      return arrayItens;
-    });
-    Promise.all(cartArray).then((values) => {
-      localStorage.setItem('cart', JSON.stringify(values));
-    });
+    localStorage.setItem('cart', JSON.stringify(newCartStorage));
   }
 
   render() {
@@ -149,26 +140,28 @@ export default class Search extends Component {
           <section>
             {
               fetchProducts
-            && fetchProducts.map(({ title, thumbnail, price, id }) => (
-              <div key={ id }>
+            && fetchProducts.map((product) => (
+              <div
+                key={ product.id }
+              >
 
                 <Link
                   data-testid="product-detail-link"
-                  key={ id }
-                  to={ `/product-details/${id}` }
+                  key={ product.id }
+                  to={ `/product-details/${product.id}` }
                 >
                   <ProductCard
-                    productName={ title }
-                    productImage={ thumbnail }
-                    productPrice={ price }
+                    productName={ product.title }
+                    productImage={ product.thumbnail }
+                    productPrice={ product.price }
                   />
                 </Link>
 
                 <button
-                  id={ id }
-                  type="button"
-                  onClick={ this.addToCart }
                   data-testid="product-add-to-cart"
+                  id={ product.id }
+                  onClick={ this.addToCart }
+                  type="button"
                 >
                   +Adicionar ao Carrinho+
                 </button>

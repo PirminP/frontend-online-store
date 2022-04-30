@@ -4,8 +4,10 @@ import { Link } from 'react-router-dom';
 
 export default class Carrinho extends Component {
   render() {
-    const fetchLocalStorage = localStorage.getItem('cart');
-    const cartList = JSON.parse(fetchLocalStorage);
+    const getCartList = localStorage.getItem('cart');
+    const cartList = JSON.parse(getCartList);
+    const getQuantity = (id) => cartList.filter((product) => product.id === id).length;
+
     return (
       <div>
         {!cartList
@@ -23,7 +25,7 @@ export default class Carrinho extends Component {
               <p
                 data-testid="shopping-cart-product-quantity"
               >
-                {product.available_quantity}
+                {`Quantidade: ${getQuantity(product.id)}`}
               </p>
 
               <p>
