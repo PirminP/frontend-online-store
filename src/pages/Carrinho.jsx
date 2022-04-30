@@ -11,7 +11,7 @@ export default class Carrinho extends Component {
     return (
       <div>
         {!cartList
-          ? <p data-testid="shopping-cart-empty-message"> Seu Carrinho esta vazio </p>
+          ? <p data-testid="shopping-cart-empty-message"> Seu carrinho está vazio </p>
           : cartList.map((product) => (
             <div
               key={ product.id }
