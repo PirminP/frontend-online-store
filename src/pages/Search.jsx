@@ -6,6 +6,7 @@ import {
   getCategories,
   getProductsFromCategory,
   getProductsFromQuery } from '../services/api';
+import cart from '../services/cart';
 
 export default class Search extends Component {
   constructor() {
@@ -14,7 +15,6 @@ export default class Search extends Component {
       categoriesState: [],
       inputValue: '',
       fetchProducts: [],
-      cartStorage: [],
     };
   }
 
@@ -36,11 +36,6 @@ export default class Search extends Component {
       });
     } */
     // localStorage.setItem('cart', []);
-    const getCartList = localStorage.getItem('cart');
-    const cartList = getCartList ? JSON.parse(getCartList) : [];
-    this.setState({
-      cartStorage: cartList,
-    });
   }
 
   handleChange = ({ target: { name, value } }) => {
@@ -60,13 +55,9 @@ export default class Search extends Component {
   }
 
   addToCart = ({ target: { id } }) => {
-    const { fetchProducts, cartStorage } = this.state;
+    const { fetchProducts } = this.state;
     const getProduct = fetchProducts.find((product) => product.id === id);
-    const newCartStorage = cartStorage.concat(getProduct);
-    this.setState(() => ({
-      cartStorage: newCartStorage,
-    }));
-    localStorage.setItem('cart', JSON.stringify(newCartStorage));
+    cart.addItem(getProduct);
   }
 
   render() {
