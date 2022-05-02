@@ -56,11 +56,7 @@ export default class ProductDetails extends Component {
           +Adicionar ao Carrinho+
         </button>
 
-        <Link
-          to="/"
-        >
-          Início
-        </Link>
+        <Link to="/">Início</Link>
 
         <Link
           to="/carrinho"
