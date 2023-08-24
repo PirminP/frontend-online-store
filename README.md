@@ -1,4 +1,4 @@
-# Project Frontend Online Store
+# Project Front-End Online Store
 
 #### This website...
 
