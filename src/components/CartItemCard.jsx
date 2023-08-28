@@ -17,22 +17,18 @@ class CartItem extends Component {
         >
           {`Produto: ${cartItemName}`}
         </p>
-
         <p
           data-testid="shopping-cart-product-quantity"
         >
           {`Quantidade: ${cartItemQuantity}`}
         </p>
-
         <p>
           {`Preço: ${cartItemPrice}`}
         </p>
-
         <img
           src={ cartItemImage }
           alt={ cartItemName }
         />
-
       </div>
     );
   }
