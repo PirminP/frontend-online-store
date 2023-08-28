@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { getProductsFromProductId } from '../services/api';
 import cart from '../services/cart';
+import '../styles/ProductDetails.css';
 
 export default class ProductDetails extends Component {
   constructor(props) {
@@ -36,34 +37,21 @@ export default class ProductDetails extends Component {
   render() {
     const { productImage, productName, productPrice } = this.state;
     return (
-      <div>
-        <p
+      <div className="page-item-product">
+        <h2
           data-testid="product-detail-name"
         >
           {productName}
-
-        </p>
-
+        </h2>
         <img src={ productImage } alt={ productName } />
-
-        <p>{productPrice }</p>
-
+        <p>{`R$: ${productPrice}`}</p>
         <button
           data-testid="product-detail-add-to-cart"
           onClick={ this.addToCart }
           type="button"
         >
-          +Adicionar ao Carrinho+
+          Adicionar ao Carrinho
         </button>
-
-        <Link to="/">Início</Link>
-
-        <Link
-          to="/carrinho"
-          data-testid="shopping-cart-button"
-        >
-          Ir para Carrinho!
-        </Link>
       </div>
     );
   }
